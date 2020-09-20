@@ -3,8 +3,34 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
-
 User = get_user_model()
+
+
+class LatestProductsManager:
+    """Вывод нескольких продуктов на страницу"""
+
+    @staticmethod
+    def get_products_for_main_page(*args, **kwargs):
+        with_respect_to = kwargs.get('with_respect_to')         # если хотим выводить приоритетные модели первыми
+        products = []                                           # финальный список товаров
+        ct_models = ContentType.objects.filter(model__in=args)  # запрос
+        for ct_model in ct_models:                              # итерируясь вызовем свойства модели
+            model_products = ct_model.model_class()._base_manager.all().order_by('-id')[:6]
+            products.extend(model_products)                     # соберём модели в список
+        if with_respect_to:
+            ct_model = ContentType.objects.filter(model=with_respect_to)
+            if ct_model.exists():
+                if with_respect_to in args:
+                    return sorted(
+                        products, key=lambda x: x.__class__._meta.model_name.startswith(with_respect_to), reverse=True
+                    )
+        return products                                         # вернём список 6-и выводимых моделей
+
+
+class LatestProducts:
+
+    objects = LatestProductsManager()
+
 
 class Category(models.Model):
     """Категории"""
@@ -119,3 +145,6 @@ class Customer(models.Model):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+
+
+

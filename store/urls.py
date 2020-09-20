@@ -1,6 +1,8 @@
 from django.urls import path
-from store.views import index
+
+from .views import test_view
+
 
 urlpatterns = [
-    path('main_page', index),
+    path('', test_view, name='index')
 ]
