@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
+
 User = get_user_model()
 
 class Category(models.Model):
@@ -52,18 +53,9 @@ class Notebook(Product):
         verbose_name = "Ноутбук"
         verbose_name_plural = "Ноутбуки"
 
-#ноутбуки
-
-# Diagonal
-# Display
-# Processor_freq
-# Ram
-# Video
-# Time_without_carge
-
 
 class Smartphone(Product):
-    """Ноутбуки"""
+    """Смартфоны"""
     diagonal = models.CharField("Диагональ", max_length=255)
     display_type = models.CharField("Тип дисплея", max_length=100)
     resolution = models.CharField("Разрешение экрана", max_length=100)
@@ -81,33 +73,19 @@ class Smartphone(Product):
         verbose_name = "Смартфон"
         verbose_name_plural = "Смартфоны"
 
-#смартфоны
-
-# diagonal
-# display
-# resolution
-# accum_volume
-# ram
-# sd
-# sd_volume
-# main_cam_mp
-# frontal_cam_mp
-
-
-
 
 class CartProduct(models.Model):
     """Продукт в корзине"""
     user = models.ForeignKey('Customer', verbose_name="Покупатель", on_delete=models.CASCADE)
     cart = models.ForeignKey('Cart', verbose_name="Корзина", on_delete=models.CASCADE, related_name='related_products')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE) # Покажет все существующие модели в админке
-    object_id = models.PositiveIntegerField()                               # Индефицирует категории
+    object_id = models.PositiveIntegerField()                               # Идентифицирует категории
     content_object = GenericForeignKey('content_type', 'object_id')
     qty = models.PositiveIntegerField(default=1)
     final_price = models.DecimalField("Общая цена", max_digits=9, decimal_places=2)
 
     def __str__(self):
-        return "Продукт: {} (для корзины)".format(self.product.title)
+        return "Продукт: {} (для корзины)".format(self.content_object.title)
 
     class Meta:
         verbose_name = "Продукт в корзине"
