@@ -2,8 +2,14 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.urls import reverse
+
 
 User = get_user_model()
+
+def get_product_url(obj, viewname):
+    ct_model = obj.__class__.meta.model_name
+    return reverse(viewname, kwargs={'ct_model': ct_model, 'slug': obj.slug})
 
 
 class LatestProductsManager:
@@ -47,6 +53,11 @@ class Category(models.Model):
 
 class Product(models.Model):
     """Продукт"""
+
+    MIN_RESOLUTION = (700, 400)
+    MAX_RESOLUTION = (700, 400)
+    MAX_IMAGE_SIZE = 3145728
+
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.CASCADE)
     title = models.CharField("Название", max_length=255)
     price = models.DecimalField("Цена", max_digits=9, decimal_places=2)
@@ -79,6 +90,9 @@ class Notebook(Product):
         verbose_name = "Ноутбук"
         verbose_name_plural = "Ноутбуки"
 
+    def get_absolute_url(self):
+        return get_product_url(self, 'product_detail')
+
 
 class Smartphone(Product):
     """Смартфоны"""
@@ -98,6 +112,9 @@ class Smartphone(Product):
     class Meta:
         verbose_name = "Смартфон"
         verbose_name_plural = "Смартфоны"
+
+    def get_absolute_url(self):
+        return get_product_url(self, 'product_detail')
 
 
 class CartProduct(models.Model):
