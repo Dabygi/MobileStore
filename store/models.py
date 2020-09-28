@@ -8,8 +8,8 @@ from django.urls import reverse
 User = get_user_model()
 
 def get_product_url(obj, viewname):
-    ct_model = obj.__class__.meta.model_name
-    return reverse(viewname, kwargs={'ct_model': ct_model, 'slug': obj.slug})
+    ct_model = obj.__class__._meta.model_name
+    return reverse(viewname, kwargs={'ct_model': ct_model, 'url': obj.url})
 
 
 class LatestProductsManager:

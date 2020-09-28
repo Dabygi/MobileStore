@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'index.html' %}  # Наследуемся от базового html
+
+{% block content %}
+
 {{ product.title }}
-</body>
-</html>
+
+{% endblock content %}
+
+
