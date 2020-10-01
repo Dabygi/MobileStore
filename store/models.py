@@ -41,7 +41,7 @@ class LatestProducts:
 class Category(models.Model):
     """Категории"""
     name = models.CharField("Категория", max_length=150)
-    url = models.SlugField(max_length=160, unique=True)
+    slug = models.SlugField(max_length=160, unique=True)
 
     def __str__(self):
         return self.name
@@ -54,8 +54,8 @@ class Category(models.Model):
 class Product(models.Model):
     """Продукт"""
 
-    MIN_RESOLUTION = (700, 400)
-    MAX_RESOLUTION = (700, 400)
+    MIN_RESOLUTION = (400, 400)
+    MAX_RESOLUTION = (800, 800)
     MAX_IMAGE_SIZE = 3145728
 
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.CASCADE)
@@ -63,7 +63,7 @@ class Product(models.Model):
     price = models.DecimalField("Цена", max_digits=9, decimal_places=2)
     description = models.TextField("Описание", null=True)
     image = models.ImageField("Изображение", upload_to="images/")
-    url = models.SlugField(max_length=130, unique=True)
+    slug = models.SlugField(max_length=130, unique=True)
 
     def __str__(self):
         return self.title
