@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'store',
-
     'allauth',
     'allauth.account',
 ]
@@ -59,8 +58,7 @@ ROOT_URLCONF = 'djangoMobileStore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'store/templates']
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'store/templates'), os.path.join(BASE_DIR, 'store/templates', 'allauth')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

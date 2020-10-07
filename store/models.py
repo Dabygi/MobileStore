@@ -53,11 +53,6 @@ class Category(models.Model):
 
 class Product(models.Model):
     """Продукт"""
-
-    MIN_RESOLUTION = (400, 400)
-    MAX_RESOLUTION = (800, 800)
-    MAX_IMAGE_SIZE = 3145728
-
     category = models.ForeignKey(Category, verbose_name="Категория", on_delete=models.CASCADE)
     title = models.CharField("Название", max_length=255)
     price = models.DecimalField("Цена", max_digits=9, decimal_places=2)
@@ -101,8 +96,8 @@ class Smartphone(Product):
     resolution = models.CharField("Разрешение экрана", max_length=100)
     accum_volume = models.CharField("Объем аккумулятора", max_length=100)
     ram = models.CharField("Оперативная память", max_length=100)
-    sd = models.BooleanField(default=True)
-    sd_volume = models.CharField("Максимальный размер карт памяти", max_length=100)
+    sd = models.BooleanField("Наличие SD карты", default=True)
+    sd_volume = models.CharField("Максимальный размер карт памяти", max_length=255, null=True, blank=True)
     main_cam_mp = models.CharField("Основная камера", max_length=100)
     frontal_cam_mp = models.CharField("Фронтальная камера", max_length=100)
 
@@ -141,6 +136,8 @@ class Cart(models.Model):
     products = models.ManyToManyField(CartProduct, blank=True, related_name='related_cart')
     total_products = models.PositiveIntegerField(default=0)
     final_price = models.DecimalField("Общая цена", max_digits=9, decimal_places=2)
+    in_order = models.BooleanField(default=False)
+    for_anonymous_user = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)
