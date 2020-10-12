@@ -72,9 +72,9 @@
 
         <h1 class="my-4">Mobile Store</h1>
         <div class="list-group">
-          <a href="#" class="list-group-item">Общее</a>
-          <a href="#" class="list-group-item">Ноутбуки</a>
-          <a href="#" class="list-group-item">Смартфоны</a>
+          {% for category in categories %}
+          <a href="#" class="list-group-item">{{ category.name }} ({{ category.count }})</a>
+          {% endfor %}
         </div>
 
       </div>
