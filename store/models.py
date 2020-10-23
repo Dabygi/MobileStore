@@ -159,6 +159,10 @@ class CartProduct(models.Model):
         verbose_name = "Продукт в корзине"
         verbose_name_plural = "Продукты в корзине"
 
+    def save(self, *args, **kwargs):
+        self.final_price = self.qty * self.content_object.price
+        super().save(*args, **kwargs)
+
 
 class Cart(models.Model):
     """Корзина"""
