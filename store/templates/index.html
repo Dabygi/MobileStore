@@ -23,6 +23,7 @@
     }
 </style>
 <body>
+    {% load i18n %}
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -33,14 +34,14 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'cart' %}">Cart <span class="badge badge-pill badge-danger">0</span></a>
+            <a class="nav-link" href="{% url 'cart' %}">{% trans 'Cart ' %}<span class="badge badge-pill badge-danger">{{ cart.products.count }}</span></a>
           </li>
           <li class="d-flex flex-row-reverse">
             {% if user.is_authenticated %}
                 <a class="nav-link disabled">
                     <span>{{ user.username }}</span>
                 </a>
-                    <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                    <a class="nav-link" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
             {% else %}
                     <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                     <a class="nav-link" href="{% url 'account_signup' %}">Registration</a>
