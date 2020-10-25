@@ -98,6 +98,9 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
 
+    def get_model_name(self):
+        return self.__class__.__name__.lower()
+
 
 class Notebook(Product):
     """Ноутбуки"""
@@ -179,6 +182,15 @@ class Cart(models.Model):
     class Meta:
         verbose_name = "Корзина"
         verbose_name_plural = "Корзины"
+
+    def save(self, *args, **kwargs):
+        cart_data = self.products.aggregate(models.Sum('final_price'), models.Count('id'))
+        if cart_data.get('final_price__sum'):
+            self.final_price = cart_data['final_price__sum']
+        else:
+            self.final_price = 0
+        self.total_price = cart_data['id__count']
+        super().save(*args, **kwargs)
 
 
 class Customer(models.Model):
