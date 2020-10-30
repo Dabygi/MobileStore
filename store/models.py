@@ -189,7 +189,7 @@ class Cart(models.Model):
             self.final_price = cart_data['final_price__sum']
         else:
             self.final_price = 0
-        self.total_price = cart_data['id__count']
+        self.total_products = cart_data['id__count']
         super().save(*args, **kwargs)
 
 

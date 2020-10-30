@@ -17,9 +17,10 @@
         <h4 class="card-title">
           <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
         </h4>
-        <h5>{{ product.price }} руб.</h5>
-          <a href="{% url 'add_to_cart' ct_model=product.get_model_name slug=product.slug %}"></a>
-      <button class="btn btn-danger">Добавить в корзину</button>
+        <h5>{{ product.price }} $</h5>
+          <a href="{% url 'add_to_cart' ct_model=product.get_model_name slug=product.slug %}">
+            <button class="btn btn-danger">Добавить в корзину</button>
+          </a>
       </div>
     </div>
   </div>
@@ -27,7 +28,3 @@
 </div>
 
 {% endblock content %}
-
-
-
-проверка 2
