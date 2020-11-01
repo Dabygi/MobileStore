@@ -180,15 +180,6 @@ class Cart(models.Model):
         verbose_name = "Корзина"
         verbose_name_plural = "Корзины"
 
-    def save(self, *args, **kwargs):
-        cart_data = self.products.aggregate(models.Sum('final_price'), models.Count('id'))
-        if cart_data.get('final_price__sum'):
-            self.final_price = cart_data['final_price__sum']
-        else:
-            self.final_price = 0
-        self.total_products = cart_data['id__count']
-        super().save(*args, **kwargs)
-
 
 class Customer(models.Model):
     """Покупатель (пользователь)"""
@@ -232,18 +223,19 @@ class Order(models.Model):
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
     phone = models.CharField(max_length=20, verbose_name='Телефон')
+    cart = models.ForeignKey(Cart, verbose_name='Корзина', on_delete=models.CASCADE, null=True, blank=True)
     address = models.CharField(max_length=1024, verbose_name='Адрес', null=True, blank=True)
     status = models.CharField(
         max_length=100,
-        verbose_name='Статус заказа',
+        verbose_name='Статус заказ',
         choices=STATUS_CHOICES,
-        default=STATUS_NEW,
+        default=STATUS_NEW
     )
     buying_type = models.CharField(
         max_length=100,
-        verbose_name='Статус заказа',
-        choices=STATUS_CHOICES,
-        default=STATUS_NEW,
+        verbose_name='Тип заказа',
+        choices=BUYING_TYPE_CHOICES,
+        default=BUYING_TYPE_SELF
     )
     comment = models.TextField(verbose_name='Комментарий к заказу', null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True, verbose_name='Дата создания заказа')
