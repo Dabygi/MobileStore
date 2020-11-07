@@ -1,3 +1,4 @@
+![Окошко из приложения](https://github.com/Dabygi/MobileStore/blob/master/mobile-store-online.png?raw=true)
 # MobileStore - репозиторий интернет-магазина электроники на Django 3.
 
 Установка (для пользователей операционных систем семейства MacOs/Linux):
