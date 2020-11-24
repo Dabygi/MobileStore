@@ -79,7 +79,7 @@ class AddToCartView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 class DeleteFromCartView(CartMixin, View):
-    """Уделение товаров из корзины"""
+    """Удаление товаров из корзины"""
     def get(self, request, *args, **kwargs):
         ct_model, product_slug = kwargs.get('ct_model'), kwargs.get('slug')
         content_type = ContentType.objects.get(model=ct_model)
