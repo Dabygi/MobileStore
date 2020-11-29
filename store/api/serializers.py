@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..models import Category, Smartphone, Notebook, Customer, Order
+from ..models import Category, Customer, Order
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -27,37 +27,37 @@ class BaseProductSerializer:
     slug = serializers.SlugField(required=True)
 
 
-class SmartphoneSerializer(BaseProductSerializer, serializers.ModelSerializer):
-    """Сериалайзер от модели Смартфонов"""
-
-    diagonal = serializers.CharField(required=True)
-    display_type = serializers.CharField(required=True)
-    resolution = serializers.CharField(required=True)
-    accum_volume = serializers.CharField(required=True)
-    ram = serializers.CharField(required=True)
-    sd = serializers.BooleanField(required=True)
-    sd_volume = serializers.CharField(required=False)
-    main_cam_mp = serializers.CharField(required=True)
-    frontal_cam_mp = serializers.CharField(required=True)
-
-    class Meta:
-        model = Smartphone
-        fields = '__all__'
-
-
-class NotebookSerializer(BaseProductSerializer, serializers.ModelSerializer):
-    """Сериалайзер от модели Ноутбуков"""
-
-    diagonal = serializers.CharField(required=True)
-    display_type = serializers.CharField(required=True)
-    processor_freq = serializers.CharField(required=True)
-    ram = serializers.CharField(required=True)
-    video_card = serializers.CharField(required=True)
-    time_without_charge = serializers.CharField(required=True)
-
-    class Meta:
-        model = Notebook
-        fields = '__all__'
+# class SmartphoneSerializer(BaseProductSerializer, serializers.ModelSerializer):
+#     """Сериалайзер от модели Смартфонов"""
+#
+#     diagonal = serializers.CharField(required=True)
+#     display_type = serializers.CharField(required=True)
+#     resolution = serializers.CharField(required=True)
+#     accum_volume = serializers.CharField(required=True)
+#     ram = serializers.CharField(required=True)
+#     sd = serializers.BooleanField(required=True)
+#     sd_volume = serializers.CharField(required=False)
+#     main_cam_mp = serializers.CharField(required=True)
+#     frontal_cam_mp = serializers.CharField(required=True)
+#
+#     class Meta:
+#         model = Smartphone
+#         fields = '__all__'
+#
+#
+# class NotebookSerializer(BaseProductSerializer, serializers.ModelSerializer):
+#     """Сериалайзер от модели Ноутбуков"""
+#
+#     diagonal = serializers.CharField(required=True)
+#     display_type = serializers.CharField(required=True)
+#     processor_freq = serializers.CharField(required=True)
+#     ram = serializers.CharField(required=True)
+#     video_card = serializers.CharField(required=True)
+#     time_without_charge = serializers.CharField(required=True)
+#
+#     class Meta:
+#         model = Notebook
+#         fields = '__all__'
 
 
 class OrderSerializer(serializers.ModelSerializer):

@@ -33,13 +33,29 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown">
+                <a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    {% for category in  categories %}
+                        <a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+          </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'cart' %}">{% trans 'Cart ' %}<span class="badge badge-pill badge-danger">{{ cart.products.count }}</span></a>
+            <a class="nav-link" href="{% url 'cart' %}">{% trans 'Cart ' %}
+                <span class="badge badge-pill badge-danger">
+                    {{ cart.products.count }}
+                </span>
+            </a>
           </li>
           <li class="d-flex flex-row-reverse">
+
             {% if user.is_authenticated %}
-                <a class="nav-link disabled">
-                    <span>{{ user.username }}</span>
+                <a class="navbar text-light">Hello,
+                    <span class="badge badge-danger">{{ user.username }}</span>
                 </a>
                     <a class="nav-link" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
             {% else %}
@@ -118,7 +134,7 @@
                     <a href="{{ product.get_absolute_url }}"><small>{{ product.title }}</small></a>
                 </h4>
                 <h5>{{ product.price }} $</h5>
-                <a href="{% url 'add_to_cart' ct_model=product.get_model_name slug=product.slug %}">
+                <a href="{% url 'add_to_cart' slug=product.slug %}">
                   <button class="btn btn-danger">Добавить в корзину</button>
                 </a>
               </div>
