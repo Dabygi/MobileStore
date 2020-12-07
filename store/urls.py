@@ -10,6 +10,7 @@ from .views import (
     ChangeQTYview,
     CheckoutView,
     MakeOrderView,
+    ProfileView,
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
     path('change-qty/<str:slug>/', ChangeQTYview.as_view(), name='change_qty'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('make-order/', MakeOrderView.as_view(), name='make-order'),
+    path('profile/', ProfileView.as_view(), name='profile'),
 ]

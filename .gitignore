@@ -1,2 +1,8 @@
 # Project exclude paths
 /virtual/
+Будет удалено djangoMobileStore/__pycache__/
+Будет удалено static_dev/
+Будет удалено store/__pycache__/
+Будет удалено store/api/__pycache__/
+Будет удалено store/migrations/__pycache__/
+Будет удалено store/templatetags/__pycache__/

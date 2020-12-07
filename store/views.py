@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, View
 
-from .models import Category, Customer, Cart, CartProduct, Product
+from .models import Category, Customer, Order, CartProduct, Product
 from .mixins import CartMixin
 from .forms import OrderForm
 from .utils import recalc_cart
@@ -117,6 +117,7 @@ class CheckoutView(CartMixin, View):
         }
         return render(request, 'checkout.html', context)
 
+
 class MakeOrderView(CartMixin, View):
     """Обработка заказа"""
     @transaction.atomic
@@ -142,5 +143,21 @@ class MakeOrderView(CartMixin, View):
             messages.add_message(request, messages.INFO, 'Спасибо за заказ! Менеджер с Вами свяжется')
             return HttpResponseRedirect('/')
         return HttpResponseRedirect('/checkout/')
+
+
+class ProfileView(CartMixin, View):
+    """Профиль покупателя"""
+    def get(self, request, *args, **kwargs):
+        customer = Customer.objects.get(user=request.user)
+        order = Order.objects.filter(customer=customer).order_by('-created_at')
+        categories = Category.objects.all()
+        return render(
+            request,
+            'profile.html',
+            {'orders': order, 'cart': self.cart, 'categories': categories},
+        )
+
+
+
 
 
