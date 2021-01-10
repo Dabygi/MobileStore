@@ -6,7 +6,6 @@ from django.utils import timezone
 
 User = get_user_model()
 
-
 class Category(models.Model):
     """Категории"""
     name = models.CharField("Категория", max_length=150)

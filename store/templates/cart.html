@@ -28,9 +28,9 @@
   <tbody>
     {% for item in cart.products.all %}
         <tr>
-          <th scope="row">{{ item.content_object.title }}</th>
+          <th scope="row">{{ item.product.title }}</th>
           <td class="w-25"><img src="{{ item.product.image.url }}" class="img-fluid"></td>
-          <td>{{ item.content_object.price }} $</td>
+          <td>{{ item.product.price }}$</td>
             <td>
             <form action="{% url 'change_qty' slug=item.product.slug %}" method="POST">
               {% csrf_token %}
@@ -39,7 +39,7 @@
               <input type="submit" class="btn btn-primary" value="Изменить кол-во">
             </form>
           </td>
-            <td>{{ item.final_price }} $</td>
+            <td>{{ item.final_price }}$</td>
           <td>
             <a href="{% url 'delete_from_cart' slug=item.product.slug %}"><button class="btn btn-danger">Delete</button></a>
           </td>
@@ -49,7 +49,7 @@
           <td colspan="2"></td>
           <td>Итого:</td>
           <td>{{ cart.total_products }}</td>
-          <td><strong>{{ cart.final_price }} $</strong></td>
+          <td><strong>{{ cart.final_price }}$</strong></td>
           <td><a href="{% url 'checkout' %}"><button class="btn btn-primary">Перейти к оформлению</button></a></td>
         </tr>
   </tbody>
