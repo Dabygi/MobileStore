@@ -21,12 +21,6 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('category_detail', kwargs={'slug': self.slug})
 
-    def get_fields_for_filter_in_template(self):
-        return ProductFeatures.objects.filter(
-            category=self,
-            use_in_filter=True,
-        ).prefetch_related('category').values('feature_key,' 'feature_measure', 'feature_name', 'filter_type')
-
 
 class Product(models.Model):
     """Продукт"""
@@ -36,6 +30,7 @@ class Product(models.Model):
     description = models.TextField("Описание", null=True)
     image = models.ImageField("Изображение", upload_to="images/")
     slug = models.SlugField(max_length=130, unique=True)
+    features = models.ManyToManyField("specs.ProductFeatures", blank=True, related_name='features_for_product')
 
     def __str__(self):
         return self.title
@@ -44,66 +39,11 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
 
-    def get_model_name(self):
-        return self.__class__.__name__.lower()
+    def get_features(self):
+        return {f.feature.feature_name: ' '.join([f.value, f.feature.unit or ""]) for f in self.features.all()}
 
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
-
-
-class ProductFeatures(models.Model):
-    """Характеристики товара"""
-    RADIO = 'radio'
-    CHECKBOX = 'checkbox'
-
-    FILTER_TYPE_CHOICES = (
-        (RADIO, 'Радиокнопка'),
-        (CHECKBOX, 'Чекбокс')
-    )
-    feature_key = models.CharField(max_length=100, verbose_name='Ключ характеристики')
-    feature_name = models.CharField(max_length=255, verbose_name='Наименование характеристики')
-    category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE)
-    postfix_for_value = models.CharField(
-        max_length=20,
-        null=True,
-        blank=True,
-        verbose_name='Постфикс для значения',
-        help_text=f'Например для характеристики "Часы работы" к значению '
-                  f'можно добавить постфикс "часов", и как результат - значение "10 часов"'
-    )
-    use_in_filter = models.BooleanField(
-        default=False,
-        verbose_name='Использовать в фильтрации товаров в шаблоне'
-    )
-    filter_type = models.CharField(
-        max_length=20,
-        verbose_name='Тип фильтра',
-        default=CHECKBOX,
-        choices=FILTER_TYPE_CHOICES
-    )
-    filter_measure = models.CharField(
-        max_length=50,
-        verbose_name='Единица измерения для фильтра',
-        help_text='Единица измерения для конкретного фильтра. Например "Частота процессора (Ghz)'
-                  'Единицей измерения будет информация в скобках'
-    )
-
-    def __str__(self):
-        return f'Категория - "{self.category.name}" | Характеристика - "{self.feature_name}"'
-
-
-class ProductFeatureValidators(models.Model):
-    """Валидация значений характеристик"""
-    category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE)
-    feature = models.ForeignKey(ProductFeatures, verbose_name='Характеристика', null=True, blank=True, on_delete=models.CASCADE)
-    feature_value = models.CharField(max_length=255, unique=True, null=True, blank=True, verbose_name='Значение характеристики')
-
-    def __str__(self):
-        if not self.feature:
-            return f'Валидатор категории "{self.category.name}" - характеристика не выбрана'
-        return f'Валидатор категории "{self.category.name}" | ' \
-               f'Характеристика - "{self.feature.feature_name}" | ' \
-               f'Значение - "{self.feature_value}"'
 
 
 class CartProduct(models.Model):

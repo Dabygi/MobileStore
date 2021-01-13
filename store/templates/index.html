@@ -35,17 +35,17 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-                <a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Categories
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    {% for category in  categories %}
-                        <a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
-                    {% endfor %}
-                </div>
-          </li>
+{#          <li class="nav-item dropdown">#}
+{#                <a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"#}
+{#                   aria-haspopup="true" aria-expanded="false">#}
+{#                    Categories#}
+{#                </a>#}
+{#                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">#}
+{#                    {% for category in  categories %}#}
+{#                        <a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name }}</a>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#          </li>#}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'cart' %}">{% trans 'Cart ' %}
                 <span class="badge badge-pill badge-danger">
@@ -56,12 +56,12 @@
           <li class="d-flex flex-row-reverse">
 
             {% if user.is_authenticated %}
-                <span class="navbar text-light">Hello,
-                    <span class="badge badge-danger">
+                <span class="badge badge-danger">
                         <a class="nav-link text-light" style="text-decoration: none; font-size: 14px;" href="{% url 'profile' %}">{{ user.username }}</a>
-                    </span>
                 </span>
-                <a class="nav-link" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
+
+                    <a class="nav-link" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
+
             {% else %}
                     <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                     <a class="nav-link" href="{% url 'account_signup' %}">Registration</a>
