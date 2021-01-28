@@ -1,5 +1,6 @@
 # Project exclude paths
 /virtual/
+.idea
 Будет удалено djangoMobileStore/__pycache__/
 Будет удалено static_dev/
 Будет удалено store/__pycache__/
