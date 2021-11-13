@@ -91,7 +91,7 @@ class Customer(models.Model):
     order = models.ManyToManyField('Order', verbose_name='Заказы покупателя', related_name='related_customer')
 
     def __str__(self):
-        return "Покупатель: {} {}".format(self.user.first_name, self.user.last_name)
+        return "Покупатель: {}".format(self.user)
 
     class Meta:
         verbose_name = "Покупатель"

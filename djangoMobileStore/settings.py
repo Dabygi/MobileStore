@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'djangoMobileStore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ecom_db',
+        'NAME': 'ecom_mobile_db',
         'USER': 'ecomuser',
         'PASSWORD': 'devpass',
         'HOST': '127.0.0.1',
@@ -163,3 +163,5 @@ STATICFILES_DIRS = (
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SITE_ID = 1
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
