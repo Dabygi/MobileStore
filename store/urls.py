@@ -14,7 +14,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', BaseView.as_view(), name='index'),
+    path('', BaseView.as_view(), name='base'),
     path('products/<str:slug>/', ProductDetailView.as_view(), name='product_detail'),
     # Model-View-Template
     path('category/<str:slug>/', CategoryDetailView.as_view(), name='category_detail'),

@@ -1,11 +1,11 @@
-{% extends 'index.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
 <h3 class="mt-3 mb-3">Buyer's orders {{ user.username }}</h3>
 {% if not orders.count %}
 <div class="col-md-12" style="margin-top: 300px; margin-bottom: 300px">
-    <h3>У вас ещё нет заказов <a href="{% url 'index' %}">Начните делать покупки</a></h3>
+    <h3>У вас ещё нет заказов <a href="{% url 'base' %}">Начните делать покупки</a></h3>
 </div>
 
 {% else %}

@@ -20,7 +20,7 @@ class BaseView(CartMixin, View):
             'products': products,
             'cart': self.cart,
         }
-        return render(request, 'index.html', context)
+        return render(request, 'base.html', context)
 
 
 class ProductDetailView(CartMixin, DetailView):   # Вывод информации о продукции Model-View-Template
