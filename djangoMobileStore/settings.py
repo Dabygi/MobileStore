@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+from django.contrib.messages import constants as message_constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +45,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'crispy_forms',
     'rest_framework',
+    'todo',
+    'dal',
+    'dal_select2',
 ]
 
 MIDDLEWARE = [
@@ -59,18 +63,25 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'djangoMobileStore.urls'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SECURITY_WARN_AFTER = 5
+SESSION_SECURITY_EXPIRE_AFTER = 12
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'store/templates'), os.path.join(BASE_DIR, 'store/templates', 'allauth')],
+        'DIRS': [os.path.join(BASE_DIR, 'store/templates', 'todo/templates/todo'), os.path.join(BASE_DIR, 'store/templates', 'allauth', 'todo/templates/todo')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.i18n',
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -138,6 +149,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 
 gettext = lambda s: s
+
 LANGUAGES = (
     ('ru', gettext('Russia')),
     ('en', gettext('English')),
@@ -165,3 +177,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID = 1
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+TODO_DEFAULT_LIST_SLUG = 'tickets'

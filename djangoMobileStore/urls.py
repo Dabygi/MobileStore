@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('store.urls')),
     path('accounts/', include('allauth.urls')),
     path('product-specs/', include('specs.urls')),
+    path('todo/', include('todo.urls', namespace="todo")),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
