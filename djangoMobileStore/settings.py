@@ -178,4 +178,11 @@ SITE_ID = 1
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
+# Todo-specific settings
+TODO_STAFF_ONLY = False
+TODO_DEFAULT_LIST_ID = None
+TODO_DEFAULT_ASSIGNEE = None
 TODO_DEFAULT_LIST_SLUG = 'tickets'
+TODO_PUBLIC_SUBMIT_REDIRECT = ''
+TODO_ALLOW_FILE_ATTACHMENTS = True
+TODO_LIMIT_FILE_ATTACHMENTS = [".jpg", ".gif", ".png", ".csv", ".pdf"]
