@@ -94,24 +94,24 @@
     {# Task edit / new task form #}
     {% include 'todo/include/task_edit.html' %}
     {% if merge_form is not None %}
-    <form action="" method="post">
-      <div class="card border-danger">
-      <div class="card-header">Merge task</div>
-      <div class="card-body">
-        <div class="">
-          <p>Merging is a destructive operation. This task will not exist anymore, and comments will be moved to the target task.</p>
-        {% csrf_token %}
-        {% for field in merge_form.visible_fields %}
-        <p>
-          {{ field.errors }}
-          {{ field }}
-        </p>
-        {% endfor %}
-        <input class="d-inline btn btn-sm btn-outline-danger" type="submit" name="merge_task_into" value="Merge">
-      </div>
-      </div>
-      </div>
-    </form>
+{#    <form action="" method="post">#}
+{#      <div class="card border-danger">#}
+{#      <div class="card-header">Merge task</div>#}
+{#      <div class="card-body">#}
+{#        <div class="">#}
+{#          <p>Merging is a destructive operation. This task will not exist anymore, and comments will be moved to the target task.</p>#}
+{#        {% csrf_token %}#}
+{#        {% for field in merge_form.visible_fields %}#}
+{#        <p>#}
+{#          {{ field.errors }}#}
+{#          {{ field }}#}
+{#        </p>#}
+{#        {% endfor %}#}
+{#        <input class="d-inline btn btn-sm btn-outline-danger" type="submit" name="merge_task_into" value="Merge">#}
+{#      </div>#}
+{#      </div>#}
+{#      </div>#}
+{#    </form>#}
     {% endif %}
   </div>
 

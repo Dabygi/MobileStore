@@ -13,6 +13,11 @@ import os
 from pathlib import Path
 from django.contrib.messages import constants as message_constants
 
+from todo.mail.producers import imap_producer
+from todo.mail.consumers import tracker_consumer
+from todo.mail.delivery import smtp_backend, console_backend
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -172,11 +177,17 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static_dev'),
 )
 
+# Without this, uploaded files > 4MB end up with perm 0600, unreadable by web server process
+FILE_UPLOAD_PERMISSIONS = 0o644
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SITE_ID = 1
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# Override CSS class for the ERROR tag level to match Bootstrap class name
+MESSAGE_TAGS = {message_constants.ERROR: "danger"}
 
 # Todo-specific settings
 TODO_STAFF_ONLY = False
