@@ -1,7 +1,14 @@
 from django import forms
 
+from .models import FeatureValidator, CategoryFeature
 from store.models import Category
-from .models import CategoryFeature
+
+
+class NewCategoryFeatureKeyForm(forms.ModelForm):
+
+    class Meta:
+        model = CategoryFeature
+        fields = '__all__'
 
 
 class NewCategoryForm(forms.ModelForm):
@@ -11,8 +18,8 @@ class NewCategoryForm(forms.ModelForm):
         fields = '__all__'
 
 
-class NewCategoryFeatureKeyForm(forms.ModelForm):
+class FeatureValidatorForm(forms.ModelForm):
 
     class Meta:
-        model = CategoryFeature
-        fields = '__all__'
+        model = FeatureValidator
+        fields = ['category']
