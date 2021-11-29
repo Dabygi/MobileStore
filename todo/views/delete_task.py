@@ -14,6 +14,9 @@ from todo.utils import staff_check
 def delete_task(request, task_id: int) -> HttpResponse:
     """Delete specified task.
     Redirect to the list from which the task came.
+
+    Удалите указанную задачу.
+    Перенаправление в список, из которого пришло задание.
     """
 
     if request.method == "POST":

@@ -10,7 +10,6 @@ from todo.operations.csv_importer import CSVImporter
 class Command(BaseCommand):
     help = """Import specifically formatted CSV file containing incoming tasks to be loaded.
     For specfic format of inbound CSV, see data/import_example.csv.
-    For documentation on upsert logic and required fields, see README.md.
     """
 
     def add_arguments(self, parser: CommandParser) -> None:
@@ -21,6 +20,7 @@ class Command(BaseCommand):
 
     def handle(self, *args: Any, **options: Any) -> None:
         # Need a file to proceed
+        # Нужен файл для продолжения
         if not options.get("file"):
             print("Sorry, we need a filename to work from.")
             sys.exit(1)
@@ -32,17 +32,20 @@ class Command(BaseCommand):
             sys.exit(1)
 
         # Encoding "utf-8-sig" means "ignore byte order mark (BOM), which Excel inserts when saving CSVs."
+        # Кодировка "utf-8-sig" означает "игнорировать метку порядка байтов (BOM), которую Excel вставляет при сохранении CSV".
         with filepath.open(mode="r", encoding="utf-8-sig") as fileobj:
             importer = CSVImporter()
             results = importer.upsert(fileobj, as_string_obj=True)
 
         # Report successes, failures and summaries
+        # Сообщать об успехах, неудачах и резюмировать
         print()
         if results["upserts"]:
             for upsert_msg in results["upserts"]:
                 print(upsert_msg)
 
         # Stored errors has the form:
+        # Сохраненные ошибки имеют вид:
         # self.errors = [{3: ["Incorrect foo", "Non-existent bar"]}, {7: [...]}]
         if results["errors"]:
             for error_dict in results["errors"]:

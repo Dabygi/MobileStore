@@ -16,6 +16,7 @@ num_lists = 5
 
 def gen_title(tc=True):
     # faker doesn't provide a way to generate headlines in Title Case, without periods, so make our own.
+    # faker не предоставляет способа генерировать заголовки в регистре заголовка без точек, поэтому сделайте наш собственный.
     # With arg `tc=True`, Title Cases The Generated Text
     fake = Faker()
     thestr = fake.text(max_nb_chars=32).rstrip(".")
@@ -27,6 +28,7 @@ def gen_title(tc=True):
 
 def gen_content():
     # faker provides paragraphs as a list; convert with linebreaks
+    # faker предоставляет абзацы в виде списка; преобразуйте с помощью разрывов строк
     fake = Faker()
     grafs = fake.paragraphs()
     thestr = ""
@@ -50,17 +52,20 @@ class Command(BaseCommand):
 
         if options.get("delete"):
             # Wipe out previous contents? Cascade deletes the Tasks from the TaskLists.
+            # Стереть предыдущее содержимое? Каскад удаляет Задачи из списков задач.
             TaskList.objects.all().delete()
             print("Content from previous run deleted.")
             print("Working...")
 
-        fake = Faker()  # Use to create user's names
+        fake = Faker()  # Use to create user's names (Используется для создания имен пользователей)
 
         # Create users and groups, add different users to different groups. Staff user is in both groups.
+        # Создавайте пользователей и группы, добавляйте разных пользователей в разные группы. Пользователь персонала входит в обе группы.
         sd_group, created = Group.objects.get_or_create(name="Scuba Divers")
         bw_group, created = Group.objects.get_or_create(name="Basket Weavers")
 
         # Put user1 and user2 in one group, user3 and user4 in another
+        # Поместите user1 and user2 в одну группу, user3 and user4 в другую
         usernames = ["user1", "user2", "user3", "user4", "staffer"]
         for username in usernames:
             if get_user_model().objects.filter(username=username).exists():
@@ -89,6 +94,7 @@ class Command(BaseCommand):
                 user.groups.add(sd_group)
 
         # Create lists with tasks, plus one with fixed name for externally added tasks
+        # Создавайте списки с задачами, а также один с фиксированным именем для добавленных извне задач
         TaskListFactory.create_batch(5, group=bw_group)
         TaskListFactory.create_batch(5, group=sd_group)
         TaskListFactory.create(name="Public Tickets", slug="tickets", group=bw_group)
@@ -100,6 +106,7 @@ class Command(BaseCommand):
 
 class TaskListFactory(factory.django.DjangoModelFactory):
     """Group not generated here - call with group as arg."""
+    # Группа не сгенерирована здесь - вызовите группу в качестве аргумента.
 
     class Meta:
         model = TaskList
@@ -116,6 +123,7 @@ class TaskListFactory(factory.django.DjangoModelFactory):
 
 class TaskFactory(factory.django.DjangoModelFactory):
     """TaskList not generated here - call with TaskList as arg."""
+    # Список задач здесь не создан - вызовите со списком задач в качестве аргументов.
 
     class Meta:
         model = Task
@@ -133,7 +141,7 @@ class TaskFactory(factory.django.DjangoModelFactory):
     @factory.post_generation
     def add_details(self, build, extracted, **kwargs):
 
-        fake = Faker()  # Use to create user's names
+        fake = Faker()  # Use to create user's names (Используется для создания имен пользователей)
         taskgroup = self.task_list.group
 
         self.created_by = taskgroup.user_set.all().order_by("?").first()
@@ -142,10 +150,12 @@ class TaskFactory(factory.django.DjangoModelFactory):
             self.completed_date = fake.date_this_year()
 
         # 1/3 of generated tasks have a due_date
+        # 1/3 сгенерированных задач имеют дату выполнения
         if random.randint(1, 3) == 1:
             self.due_date = fake.date_this_year()
 
         # 1/3 of generated tasks are assigned to someone in this tasks's group
+        # 1/3 сгенерированных задач назначается кому-либо из этой группы задач
         if random.randint(1, 3) == 1:
             self.assigned_to = taskgroup.user_set.all().order_by("?").first()
 

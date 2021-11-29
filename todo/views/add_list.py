@@ -14,6 +14,8 @@ from todo.utils import staff_check
 @user_passes_test(staff_check)
 def add_list(request) -> HttpResponse:
     """Allow users to add a new todo list to the group they're in.
+
+    Разрешить пользователям добавлять новый список задач в группу, в которой они находятся.
     """
 
     # Only staffers can add lists, regardless of TODO_STAFF_USER setting.

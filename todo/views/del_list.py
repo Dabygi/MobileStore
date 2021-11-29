@@ -12,6 +12,8 @@ from todo.utils import staff_check
 @user_passes_test(staff_check)
 def del_list(request, list_id: int, list_slug: str) -> HttpResponse:
     """Delete an entire list. Only staff members should be allowed to access this view.
+
+    Удалите весь список. Доступ к этому представлению должен быть разрешен только staff.
     """
     task_list = get_object_or_404(TaskList, id=list_id)
 

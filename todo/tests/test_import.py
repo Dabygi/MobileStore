@@ -11,6 +11,9 @@ from todo.operations.csv_importer import CSVImporter
 """
 Exercise the "Import CSV" feature, which shares a functional module that serves
 both the `import_csv` management command and the "Import CSV" web interface.
+
+Используйте функцию "Import CSV", которая совместно использует функциональный модуль, который обслуживает
+как команду управления "import_csv", так и веб-интерфейс "Import CSV".
 """
 
 
@@ -28,20 +31,29 @@ def import_setup(todo_setup):
 
 @pytest.mark.django_db
 def test_setup(todo_setup):
-    """Confirm what we should have from conftest, prior to importing CSV."""
+    """Confirm what we should have from conftest, prior to importing CSV.
+
+    Убедитесь, что мы получили conftest, прежде чем импортировать CSV.
+    """
     assert TaskList.objects.all().count() == 2
     assert Task.objects.all().count() == 6
 
 
 @pytest.mark.django_db
 def test_import(import_setup):
-    """Confirm that importing the CSV gave us two more rows (one should have been skipped)"""
+    """Confirm that importing the CSV gave us two more rows (one should have been skipped)
+
+    Убедитесь, что импорт CSV дал нам еще две строки (одну следовало пропустить)
+    """
     assert Task.objects.all().count() == 8  # 2 out of 3 rows should have imported; one was an error
 
 
 @pytest.mark.django_db
 def test_report(import_setup):
-    """Confirm that importing the CSV returned expected report messaging."""
+    """Confirm that importing the CSV returned expected report messaging.
+
+    Убедитесь, что импорт CSV вернул ожидаемое сообщение отчета.
+    """
 
     results = import_setup["results"]
 
@@ -66,7 +78,10 @@ def test_report(import_setup):
 
 @pytest.mark.django_db
 def test_inserted_row(import_setup):
-    """Confirm that one inserted row is exactly right."""
+    """Confirm that one inserted row is exactly right.
+
+    Убедитесь, что одна вставленная строка является абсолютно правильной.
+    """
     task = Task.objects.get(title="Make dinner", task_list__name="Zip")
     assert task.created_by == get_user_model().objects.get(username="u1")
     assert task.assigned_to == get_user_model().objects.get(username="u1")

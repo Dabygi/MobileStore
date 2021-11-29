@@ -11,6 +11,10 @@ from todo.models import Task, TaskList
 First the "smoketests" - do they respond at all for a logged in admin user?
 Next permissions tests - some views should respond for staffers only.
 After that, view contents and behaviors.
+
+Сначала "smoketests" - отвечают ли они вообще для вошедшего в систему пользователя-администратора?
+Далее тесты прав - некоторые представления должны отвечать только для staff.
+После этого просмотрите содержимое и поведение.
 """
 
 
@@ -195,7 +199,12 @@ def test_created_by_unchanged(todo_setup, client):
 def test_completed_unchanged(test_input, expected, todo_setup, client):
     """Tasks are marked completed/uncompleted by buttons,
     not via checkbox on the task edit form. Editing a task should
-    not change its completed status. Test with both completed and incomplete Tasks."""
+    not change its completed status. Test with both completed and incomplete Tasks.
+
+    Задачи помечаются как выполненные/незавершенные кнопками, а не флажком в форме редактирования задачи.
+    Редактирование задачи не должно изменять ее статус выполнения.
+    Тест с выполненными и незавершенными заданиями.
+    """
 
     task = Task.objects.get(title="Task 1", created_by__username="u1")
     task.completed = test_input
@@ -273,6 +282,8 @@ def test_del_list_not_in_list_group(todo_setup, admin_client):
 
 def test_view_list_mine(todo_setup, client):
     """View a list in a group I belong to.
+
+    Просмотр списка в группе, к которой я принадлежу.
     """
     tlist = TaskList.objects.get(slug="zip")  # User u1 is in this group's list
     url = reverse("todo:list_detail", kwargs={"list_id": tlist.id, "list_slug": tlist.slug})
@@ -283,6 +294,8 @@ def test_view_list_mine(todo_setup, client):
 
 def test_view_list_not_mine(todo_setup, client):
     """View a list in a group I don't belong to.
+
+    Просмотр списка в группе, к которой я не принадлежу.
     """
     tlist = TaskList.objects.get(slug="zip")  # User u1 is in this group, user u2 is not.
     url = reverse("todo:list_detail", kwargs={"list_id": tlist.id, "list_slug": tlist.slug})
@@ -303,7 +316,11 @@ def test_view_task_mine(todo_setup, client):
 def test_view_task_my_group(todo_setup, client, django_user_model):
     """User can always view tasks that are NOT theirs IF the task is in a shared group.
     u1 and u2 are in different groups in the fixture -
-    Put them in the same group."""
+    Put them in the same group.
+
+    Пользователь всегда может просматривать задачи, которые ему НЕ принадлежат, ЕСЛИ задача находится в общей группе.
+    u1 и u2 находятся в разных группах в настройках поместите их в одну группу.
+    """
     g1 = Group.objects.get(name="Workgroup One")
     u2 = django_user_model.objects.get(username="u2")
     u2.groups.add(g1)

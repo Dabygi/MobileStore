@@ -8,6 +8,9 @@ from todo.utils import send_email_to_thread_participants, send_notify_mail
 def test_send_notify_mail_not_me(todo_setup, django_user_model, email_backend_setup):
     """Assign a task to someone else, mail should be sent.
     TODO: Future tests could check for email contents.
+
+    Назначьте задачу кому-то другому, почта должна быть отправлена.
+    TODO: Будущие тесты могут проверять содержимое электронной почты.
     """
 
     u1 = django_user_model.objects.get(username="u1")
@@ -22,6 +25,8 @@ def test_send_notify_mail_not_me(todo_setup, django_user_model, email_backend_se
 
 def test_send_notify_mail_myself(todo_setup, django_user_model, email_backend_setup):
     """Assign a task to myself, no mail should be sent.
+
+    Назначьте задачу самому себе, никакая почта не должна отправляться.
     """
 
     u1 = django_user_model.objects.get(username="u1")
@@ -34,7 +39,11 @@ def test_send_notify_mail_myself(todo_setup, django_user_model, email_backend_se
 
 def test_send_email_to_thread_participants(todo_setup, django_user_model, email_backend_setup):
     """For a given task authored by one user, add comments by two other users.
-    Notification email should be sent to all three users."""
+    Notification email should be sent to all three users.
+
+    Для данной задачи, созданной одним пользователем, добавьте комментарии двух других пользователей.
+    Уведомление по электронной почте должно быть отправлено всем трем пользователям.
+    """
 
     u1 = django_user_model.objects.get(username="u1")
     task = Task.objects.filter(created_by=u1).first()
@@ -59,7 +68,13 @@ def test_defaults(settings):
     """todo's `defaults` module provides reasonable default values for unspecified settings.
     If a value is NOT set, it should be pulled from the hash in defaults.py.
     If a value IS set, it should be respected.
-    n.b. TODO_STAFF_ONLY which defaults to True in the `defaults` module."""
+    n.b. TODO_STAFF_ONLY which defaults to True in the `defaults` module.
+
+    модуль "defaults" todos предоставляет разумные значения по умолчанию для неуказанных настроек.
+    Если значение НЕ задано, его следует извлечь из хэша в defaults.py .
+    Если значение установлено, его следует принять.
+    n.b. TODO_STAFF_ONLY, значение по умолчанию которого равно True в модуле "defaults".
+    """
 
     key = "TODO_STAFF_ONLY"
 

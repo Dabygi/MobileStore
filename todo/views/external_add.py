@@ -22,6 +22,12 @@ def external_add(request) -> HttpResponse:
     students can file tickets without access to the rest of the todo system).
 
     Publicly filed tickets are unassigned unless settings.DEFAULT_ASSIGNEE exists.
+
+    Разрешить аутентифицированным пользователям, у которых нет доступа к остальной части системы регистрации,
+    подавать заявки в список, указанный в настройках (например, django-todo может использоваться в системе регистрации
+    заявок для школы, где учащиеся могут подавать заявки без доступа к остальной части системы регистрации заявок).
+
+    Общедоступные заявки не назначаются, если только не прописана settings.DEFAULT_ASSIGNEE.
     """
 
     if not settings.TODO_DEFAULT_LIST_SLUG:

@@ -27,7 +27,7 @@ msgstr ""
 
 #: store/templates/account/account_inactive.html:10
 msgid "This account is inactive."
-msgstr ""
+msgstr "Аккаунт не активен"
 
 #: store/templates/account/email.html:5 store/templates/account/email.html:8
 msgid "E-mail Addresses"

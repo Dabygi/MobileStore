@@ -30,11 +30,13 @@ class Command(BaseCommand):
             sys.exit(1)
 
         # set the default socket timeout (imaplib doesn't enable configuring it)
+        # установите время ожидания сокета по умолчанию (imaplib не позволяет его настраивать)
         timeout = options["imap_timeout"]
         if timeout:
             socket.setdefaulttimeout(timeout)
 
         # run the mail polling loop
+        # запустите цикл опроса почты
         producer = tracker["producer"]
         consumer = tracker["consumer"]
 

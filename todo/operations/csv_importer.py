@@ -13,7 +13,11 @@ log = logging.getLogger(__name__)
 
 class CSVImporter:
     """Core upsert functionality for CSV import, for re-use by `import_csv` management command, web UI and tests.
-    Supplies a detailed log of what was and was not imported at the end. See README for usage notes.
+    Supplies a detailed log of what was and was not imported at the end.
+
+    Основные функции обновления для импорта CSV, для повторного использования командой управления "import_csv",
+    веб-интерфейсом и тестами.
+    Предоставляет подробный журнал того, что было импортировано и не было импортировано в конце.
     """
 
     def __init__(self):
@@ -28,7 +32,11 @@ class CSVImporter:
         the management command and the web uploader; the web uploader will pass in in-memory file
         with no path!
 
+        Ожидает файл *object*, а не путь к файлу. Это важно, потому что это должно работать как для
+        команды управления, так и для веб-загрузчики; веб-загрузчик будет передавать файл в память без пути!
+
         Header row is:
+        Строки заголовков:
         Title, Group, Task List, Created Date, Due Date, Completed, Created By, Assigned To, Note, Priority
         """
 
@@ -66,6 +74,9 @@ class CSVImporter:
             if newrow:
                 # newrow at this point is fully validated, and all FK relations exist,
                 # e.g. `newrow.get("Assigned To")`, is a Django User instance.
+
+                # новая строка на этом этапе полностью проверена, и все отношения FK существуют,
+                # например, "новая строка.get("Assigned To")", является экземпляром пользователя Django.
                 assignee = newrow.get("Assigned To") if newrow.get("Assigned To") else None
                 created_date = (
                     newrow.get("Created Date")
@@ -105,12 +116,20 @@ class CSVImporter:
         """Perform data integrity checks and set default values. Returns a valid object for insertion, or False.
         Errors are stored for later display. Intentionally not broken up into separate validator functions because
         there are interdpendencies, such as checking for existing `creator` in one place and then using
-        that creator for group membership check in others."""
+        that creator for group membership check in others.
+
+        Выполните проверку целостности данных и установите значения по умолчанию. Возвращает допустимый объект для
+        вставки или значение False.
+        Ошибки сохраняются для последующего отображения. Намеренно не разбивается на отдельные функции валидатора,
+        потому что существуют взаимозависимости, такие как проверка существующего "создателя" в одном месте, а затем
+        использование этого создателя для проверки членства в группах в других.
+        """
 
         row_errors = []
 
         # #######################
         # Task creator must exist
+        # Создатель задачи должен существовать
         if not row.get("Created By"):
             msg = f"Missing required task creator."
             row_errors.append(msg)
@@ -122,6 +141,7 @@ class CSVImporter:
 
         # #######################
         # If specified, Assignee must exist
+        # Если указано, Назначенное лицо должен существовать
         assignee = None  # Perfectly valid
         if row.get("Assigned To"):
             assigned = get_user_model().objects.filter(username=row.get("Assigned To"))
@@ -133,6 +153,7 @@ class CSVImporter:
 
         # #######################
         # Group must exist
+        # Группа должна существовать
         try:
             target_group = Group.objects.get(name=row.get("Group"))
         except Group.DoesNotExist:
@@ -142,18 +163,21 @@ class CSVImporter:
 
         # #######################
         # Task creator must be in the target group
+        # Создатель задачи должен быть в целевой группе
         if creator and target_group not in creator.groups.all():
             msg = f"{creator} is not in group {target_group}"
             row_errors.append(msg)
 
         # #######################
         # Assignee must be in the target group
+        # Назначенный должен быть в целевой группе
         if assignee and target_group not in assignee.groups.all():
             msg = f"{assignee} is not in group {target_group}"
             row_errors.append(msg)
 
         # #######################
         # Task list must exist in the target group
+        # Список задач должен существовать в целевой группе
         try:
             tasklist = TaskList.objects.get(name=row.get("Task List"), group=target_group)
             row["Task List"] = tasklist
@@ -163,6 +187,7 @@ class CSVImporter:
 
         # #######################
         # Validate Dates
+        # Проверка Дат
         datefields = ["Due Date", "Created Date"]
         for datefield in datefields:
             datestring = row.get(datefield)
@@ -176,6 +201,7 @@ class CSVImporter:
 
         # #######################
         # Group membership checks have passed
+        # Проверки на членство в группах пройдена
         row["Created By"] = creator
         row["Group"] = target_group
         if assignee:
@@ -193,7 +219,10 @@ class CSVImporter:
         return row
 
     def validate_date(self, datestring):
-        """Inbound date string from CSV translates to a valid python date."""
+        """Inbound date string from CSV translates to a valid python date.
+
+        Строка входящих данных из CSV преобразуется в валидную дату python.
+        """
         try:
             date_obj = datetime.datetime.strptime(datestring, "%Y-%m-%d")
             return date_obj
