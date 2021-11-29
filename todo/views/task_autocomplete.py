@@ -18,6 +18,7 @@ class TaskAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
+        # Не забудьте отфильтровать результаты в зависимости от посетителя!
         if not self.request.user.is_authenticated:
             return Task.objects.none()
 

@@ -15,6 +15,9 @@ from todo.utils import staff_check
 def toggle_done(request, task_id: int) -> HttpResponse:
     """Toggle the completed status of a task from done to undone, or vice versa.
     Redirect to the list from which the task came.
+
+    Переключите статус выполненной задачи с "done" на "undone" или наоборот.
+    Перенаправление в список, из которого пришло задание.
     """
 
     if request.method == "POST":

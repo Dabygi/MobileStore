@@ -48,17 +48,23 @@ def handle_add_comment(request, task):
 @user_passes_test(staff_check)
 def task_detail(request, task_id: int) -> HttpResponse:
     """View task details. Allow task details to be edited. Process new comments on task.
+
+    Просмотр сведений о задаче. Разрешить редактирование сведений о задаче. Обработайте новые комментарии к задаче.
     """
 
     task = get_object_or_404(Task, pk=task_id)
     comment_list = Comment.objects.filter(task=task_id).order_by("-date")
 
     # Ensure user has permission to view task. Superusers can view all tasks.
+    # Убедитесь, что у пользователя есть разрешение на просмотр задачи. Суперпользователи могут просматривать все задачи.
+
     # Get the group this task belongs to, and check whether current user is a member of that group.
+    # Получите группу, к которой принадлежит эта задача, и проверьте, является ли текущий пользователь членом этой группы.
     if not user_can_read_task(task, request.user):
         raise PermissionDenied
 
     # Handle task merging
+    # Обрабатывать слияние задач (скрыто)
     if not HAS_TASK_MERGE:
         merge_form = None
     else:
@@ -72,6 +78,7 @@ def task_detail(request, task_id: int) -> HttpResponse:
             )
 
         # Handle task merging
+        # Обрабатывать слияние задач (скрыто)
         if not request.POST.get("merge_task_into"):
             merge_form = MergeForm()
         else:
@@ -85,9 +92,11 @@ def task_detail(request, task_id: int) -> HttpResponse:
             return redirect(reverse("todo:task_detail", kwargs={"task_id": merge_target.pk}))
 
     # Save submitted comments
+    # Сохранить отправленные комментарии
     handle_add_comment(request, task)
 
     # Save task edits
+    # Сохранение изменений задачи
     if not request.POST.get("add_edit_task"):
         form = AddEditTaskForm(request.user, instance=task, initial={"task_list": task.task_list})
     else:
@@ -106,6 +115,7 @@ def task_detail(request, task_id: int) -> HttpResponse:
             )
 
     # Mark complete
+    # Отметить завершение
     if request.POST.get("toggle_done"):
         results_changed = toggle_task_completed(task.id)
         if results_changed:
@@ -119,6 +129,7 @@ def task_detail(request, task_id: int) -> HttpResponse:
         thedate = datetime.datetime.now()
 
     # Handle uploaded files
+    # Обрабатывать загруженные файлы
     if request.FILES.get("attachment_file_input"):
         file = request.FILES.get("attachment_file_input")
 

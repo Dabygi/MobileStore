@@ -2,6 +2,9 @@ from django.core.checks import Error, register
 
 # the sole purpose of this warning is to prevent people who have
 # django-autocomplete-light installed but not configured to start the app
+
+# единственная цель этого предупреждения - запретить пользователям, у которых установлен django-autocomplete-light,
+# но не настроен для запуска приложения
 @register()
 def dal_check(app_configs, **kwargs):
     from django.conf import settings

@@ -14,12 +14,16 @@ from todo.utils import staff_check
 @user_passes_test(staff_check)
 def list_lists(request) -> HttpResponse:
     """Homepage view - list of lists a user can view, and ability to add a list.
+
+    Просмотр домашней страницы - список списков, которые пользователь может просматривать, и
+    возможность добавления списка.
     """
 
     thedate = datetime.datetime.now()
     searchform = SearchForm(auto_id=False)
 
     # Make sure user belongs to at least one group.
+    # Убедитесь, что пользователь принадлежит хотя бы к одной группе.
     if not request.user.groups.all().exists():
         messages.warning(
             request,
@@ -27,6 +31,7 @@ def list_lists(request) -> HttpResponse:
         )
 
     # Superusers see all lists
+    # Суперпользователь видит все списки
     lists = TaskList.objects.all().order_by("group__name", "name")
     if not request.user.is_superuser:
         lists = lists.filter(group__in=request.user.groups.all())
@@ -34,6 +39,8 @@ def list_lists(request) -> HttpResponse:
     list_count = lists.count()
 
     # superusers see all lists, so count shouldn't filter by just lists the admin belongs to
+    # суперпользователи видят все списки, поэтому счетчик не должен фильтроваться только по спискам,
+    # к которые принадлежат администратору
     if request.user.is_superuser:
         task_count = Task.objects.filter(completed=0).count()
     else:

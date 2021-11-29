@@ -11,6 +11,8 @@ from todo.utils import staff_check
 @user_passes_test(staff_check)
 def import_csv(request) -> HttpResponse:
     """Import a specifically formatted CSV into stored tasks.
+
+    Импортируйте специально отформатированный CSV в сохраненные задачи.
     """
 
     ctx = {"results": None}

@@ -15,6 +15,8 @@ from todo.utils import send_notify_mail, staff_check
 @user_passes_test(staff_check)
 def list_detail(request, list_id=None, list_slug=None, view_completed=False) -> HttpResponse:
     """Display and manage tasks in a todo list.
+
+    Отображение задач и управление ими в списке задач.
     """
 
     # Defaults
@@ -22,17 +24,20 @@ def list_detail(request, list_id=None, list_slug=None, view_completed=False) -> 
     form = None
 
     # Which tasks to show on this list view?
+    # Какие задачи отображать в этом представлении списка?
     if list_slug == "mine":
         tasks = Task.objects.filter(assigned_to=request.user)
 
     else:
         # Show a specific list, ensuring permissions.
+        # Показать определенный список, гарантирующий разрешения.
         task_list = get_object_or_404(TaskList, id=list_id)
         if task_list.group not in request.user.groups.all() and not request.user.is_superuser:
             raise PermissionDenied
         tasks = Task.objects.filter(task_list=task_list.id)
 
     # Additional filtering
+    # Дополнительная фильтрация
     if view_completed:
         tasks = tasks.filter(completed=True)
     else:
@@ -56,6 +61,8 @@ def list_detail(request, list_id=None, list_slug=None, view_completed=False) -> 
             form.save()
 
             # Send email alert only if Notify checkbox is checked AND assignee is not same as the submitter
+            # Отправлять оповещение по электронной почте только в том случае, если установлен флажок Уведомлять
+            # и получатель не совпадает с отправителем
             if (
                 "notify" in request.POST
                 and new_task.assigned_to
@@ -67,6 +74,7 @@ def list_detail(request, list_id=None, list_slug=None, view_completed=False) -> 
             return redirect(request.path)
     else:
         # Don't allow adding new tasks on some views
+        # Не разрешать добавлять новые задачи в некоторые представления
         if list_slug not in ["mine", "recent-add", "recent-complete"]:
             form = AddEditTaskForm(
                 request.user,

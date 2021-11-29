@@ -2,6 +2,10 @@
 # django-autocomplete-light is installed and configured. We can use this module
 # to check for other installed dependencies in the future.
 
+# Встроенная функция очереди почты может включать расширенные функциональные возможности,
+# если установлен и настроен django-autocomplete-light.
+# Мы можем использовать этот модуль для проверки других установленных зависимостей в будущем.
+
 HAS_AUTOCOMPLETE = True
 try:
     import dal

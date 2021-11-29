@@ -11,6 +11,8 @@ from todo.utils import staff_check
 @user_passes_test(staff_check)
 def search(request) -> HttpResponse:
     """Search for tasks user has permission to see.
+
+    Поиск задач, на просмотр которых у пользователя есть разрешение.
     """
 
     query_string = ""
@@ -26,7 +28,10 @@ def search(request) -> HttpResponse:
             )
         else:
             # What if they selected the "completed" toggle but didn't enter a query string?
+            # Что, если они нажали кнопку "completed", но не ввели строку запроса?
+
             # We still need found_tasks in a queryset so it can be "excluded" below.
+            # Нам все еще нужны found_tasks в наборе запросов, чтобы их можно было "исключить" ниже.
             found_tasks = Task.objects.all()
 
         if "inc_complete" in request.GET:
@@ -36,6 +41,7 @@ def search(request) -> HttpResponse:
         found_tasks = None
 
     # Only include tasks that are in groups of which this user is a member:
+    # Включайте только задачи, входящие в группы, членом которых является этот пользователь:
     if not request.user.is_superuser:
         found_tasks = found_tasks.filter(task_list__group__in=request.user.groups.all())
 

@@ -7,7 +7,11 @@ from todo.models import Task, TaskList
 class AddTaskListForm(ModelForm):
     """The picklist showing allowable groups to which a new list can be added
     determines which groups the user belongs to. This queries the form object
-    to derive that list."""
+    to derive that list.
+
+    Раскрывающийся список, показывающий допустимые группы, к которым можно добавить новый список, определяет,
+    к каким группам принадлежит пользователь. Он запрашивает объект формы для получения этого списка.
+    """
 
     def __init__(self, user, *args, **kwargs):
         super(AddTaskListForm, self).__init__(*args, **kwargs)
@@ -25,7 +29,11 @@ class AddTaskListForm(ModelForm):
 
 class AddEditTaskForm(ModelForm):
     """The picklist showing the users to which a new task can be assigned
-    must find other members of the group this TaskList is attached to."""
+    must find other members of the group this TaskList is attached to.
+
+    Раскрывающийся список, показывающий пользователей, которым может быть назначена новая задача,
+    должен найти других членов группы, к которой прикреплен этот список задач.
+    """
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,7 +61,11 @@ class AddEditTaskForm(ModelForm):
 
     def clean_created_by(self):
         """Keep the existing created_by regardless of anything coming from the submitted form.
-        If creating a new task, then created_by will be None, but we set it before saving."""
+        If creating a new task, then created_by will be None, but we set it before saving.
+
+        Сохраняйте существующий created_by независимо от того, что исходит из отправленной формы.
+        Если вы создаете новую задачу, то created_by будет отсутствовать, но мы устанавливаем его перед сохранением.
+        """
         return self.instance.created_by
 
     class Meta:
@@ -62,7 +74,10 @@ class AddEditTaskForm(ModelForm):
 
 
 class AddExternalTaskForm(ModelForm):
-    """Form to allow users who are not part of the GTD system to file a ticket."""
+    """Form to allow users who are not part of the GTD system to file a ticket.
+
+    Форма, позволяющая пользователям, не являющимся частью системы GTD, подавать заявку.
+    """
 
     title = forms.CharField(widget=forms.widgets.TextInput(attrs={"size": 35}), label="Summary")
     note = forms.CharField(widget=forms.widgets.Textarea(), label="Problem Description")

@@ -13,6 +13,8 @@ from todo.utils import remove_attachment_file
 def remove_attachment(request, attachment_id: int) -> HttpResponse:
     """Delete a previously posted attachment object and its corresponding file
     from the filesystem, permissions allowing.
+
+    Удалите ранее опубликованный объект вложения и соответствующий ему файл из файловой системы, разрешив права.
     """
 
     if request.method == "POST":

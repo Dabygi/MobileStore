@@ -14,6 +14,8 @@ from django.utils import timezone
 
 def get_attachment_upload_dir(instance, filename):
     """Determine upload dir for task attachment files.
+
+    Определите каталог загрузки для файлов вложений задач.
     """
 
     return "/".join(["tasks", "attachments", str(instance.task.id), filename])
@@ -27,6 +29,12 @@ class LockedAtomicTransaction(Atomic):
     Does a atomic transaction, but also locks the entire table for any transactions, for the duration of this
     transaction. Although this is the only way to avoid concurrency issues in certain situations, it should be used with
     caution, since it has impacts on performance, for obvious reasons...
+
+    модификации для https://stackoverflow.com/a/41831049 это необходимо для безопасного слияния.
+
+    Выполняет атомарную транзакцию, но также блокирует всю таблицу для любых транзакций на время этой транзакции.
+    Хотя это единственный способ избежать проблем с параллелизмом в определенных ситуациях,
+    его следует использовать с осторожностью, поскольку по очевидным причинам он влияет на производительность...
     """
 
     def __init__(self, *models, using=None, savepoint=None):
@@ -38,8 +46,9 @@ class LockedAtomicTransaction(Atomic):
     def __enter__(self):
         super(LockedAtomicTransaction, self).__enter__()
 
-        # Make sure not to lock, when sqlite is used, or you'll run into problems while running tests!!!
-        if settings.DATABASES[self.using]["ENGINE"] != "django.db.backends.sqlite3":
+        # Make sure not to lock, when postgresql is used, or you'll run into problems while running tests!!!
+        # Убедитесь, что не заблокирован, когда используется postgresql, иначе вы столкнетесь с проблемами при выполнении тестов!!!
+        if settings.DATABASES[self.using]["ENGINE"] != "django.db.backends.postgresql_psycopg2":
             cursor = None
             try:
                 cursor = get_connection(self.using).cursor()
@@ -93,8 +102,10 @@ class Task(models.Model):
     priority = models.PositiveIntegerField(blank=True, null=True)
 
     # Has due date for an instance of this object passed?
+    # Прошел ли срок для экземпляра этого объекта?
     def overdue_status(self):
         "Returns whether the Tasks's due date has passed or not."
+        "Возвращает, прошел ли срок выполнения задачи или нет."
         if self.due_date and datetime.date.today() > self.due_date:
             return True
 
@@ -105,8 +116,10 @@ class Task(models.Model):
         return reverse("todo:task_detail", kwargs={"task_id": self.id})
 
     # Auto-set the Task creation / completed date
+    # Автоматическая установка даты создания/завершения задачи
     def save(self, **kwargs):
         # If Task is being marked complete, set the completed_date
+        # Если задача помечена как завершенная, установите значение completed_date
         if self.completed:
             self.completed_date = datetime.datetime.now()
         super(Task, self).save()
@@ -118,6 +131,9 @@ class Task(models.Model):
         # lock the comments to avoid concurrent additions of comments after the
         # update request. these comments would be irremediably lost because of
         # the cascade clause
+
+        # заблокируйте комментарии, чтобы избежать одновременного добавления комментариев после запроса на обновление.
+        # эти комментарии были бы безвозвратно утеряны из-за каскадного условия.
         with LockedAtomicTransaction(Comment):
             Comment.objects.filter(task=self).update(task=merge_target)
             self.delete()
@@ -130,6 +146,9 @@ class Comment(models.Model):
     """
     Not using Django's built-in comments because we want to be able to save
     a comment and change task details at the same time. Rolling our own since it's easy.
+
+    Не используем встроенные комментарии Django, потому что мы хотим иметь возможность сохранять
+    комментарии и одновременно изменять детали задачи. Пробрасываем наши собственные, так как это легко.
     """
 
     author = models.ForeignKey(
@@ -145,6 +164,7 @@ class Comment(models.Model):
 
     class Meta:
         # an email should only appear once per task
+        # электронное письмо должно появляться только один раз для каждой задачи
         unique_together = ("task", "email_message_id")
 
     @property
@@ -159,6 +179,7 @@ class Comment(models.Model):
     def snippet(self):
         body_snippet = textwrap.shorten(self.body, width=35, placeholder="...")
         # Define here rather than in __str__ so we can use it in the admin list_display
+        # Определите здесь, а не в __str__, чтобы мы могли использовать его в отображении списка администраторов
         return "{author} - {snippet}...".format(author=self.author_text, snippet=body_snippet)
 
     def __str__(self):
@@ -168,6 +189,8 @@ class Comment(models.Model):
 class Attachment(models.Model):
     """
     Defines a generic file attachment for use in M2M relation with Task.
+
+    Определяет общее вложение файла для использования в связи M2M с задачей.
     """
 
     task = models.ForeignKey(Task, on_delete=models.CASCADE)

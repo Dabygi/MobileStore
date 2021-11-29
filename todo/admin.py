@@ -17,8 +17,10 @@ def export_to_csv(modeladmin, request, queryset):
         field for field in opts.get_fields() if not (field.many_to_many and not field.one_to_many)
     ]
     # Write a first row with header information
+    # Напишите первую строку с информацией заголовка
     writer.writerow([field.verbose_name for field in fields])
     # Write data rows
+    # Запишите строки даты
     for obj in queryset:
         data_row = []
         for field in fields:
