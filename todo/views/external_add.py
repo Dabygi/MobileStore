@@ -32,6 +32,7 @@ def external_add(request) -> HttpResponse:
 
     if not settings.TODO_DEFAULT_LIST_SLUG:
         # We do NOT provide a default in defaults
+        # Мы не предоставляем дефолт по умолчанию
         raise RuntimeError(
             "This feature requires TODO_DEFAULT_LIST_SLUG: in settings. See documentation."
         )
@@ -54,6 +55,7 @@ def external_add(request) -> HttpResponse:
             task.save()
 
             # Send email to assignee if we have one
+            # Отправьте электронное письмо правопреемнику, если он у нас есть
             if task.assigned_to:
                 email_subject = render_to_string(
                     "todo/email/assigned_subject.txt", {"task": task.title}

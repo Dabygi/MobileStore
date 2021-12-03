@@ -9,10 +9,13 @@ app_name = "todo"
 urlpatterns = [
     path("", views.list_lists, name="lists"),
     # View reorder_tasks is only called by JQuery for drag/drop task ordering.
+    # Представление reorder_tasks вызывается jQuery только для упорядочения задач перетаскивания.
     path("reorder_tasks/", views.reorder_tasks, name="reorder_tasks"),
     # Allow users to post tasks from outside django-todo (e.g. for filing tickets - see docs)
+    # Разрешить пользователям публиковать задачи из-за ограничений django-todo (например, для подачи заявок - см. Документацию)
     path("ticket/add/", views.external_add, name="external_add"),
     # Three paths into `list_detail` view
+    # Три пути в представлении "list_detail"
     path("mine/", views.list_detail, {"list_slug": "mine"}, name="mine"),
     path(
         "<int:list_id>/<str:list_slug>/completed/",
@@ -31,6 +34,7 @@ urlpatterns = [
 
 if HAS_TASK_MERGE:
     # ensure mail tracker autocomplete is optional
+    # убедитесь, что автозаполнение почтового трекера необязательно
     from todo.views.task_autocomplete import TaskAutocomplete
 
     urlpatterns.append(

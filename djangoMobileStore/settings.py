@@ -26,10 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v9dhgv_^7!cals+&2b-zt*g$pqm!ltar=@mr5m+b05uj!284a@'
+# SECRET_KEY = 'v9dhgv_^7!cals+&2b-zt*g!ltar=@mr5m+b05uj!284a@'
+
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+
+DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
 ALLOWED_HOSTS = []
 
@@ -192,8 +196,8 @@ MESSAGE_TAGS = {message_constants.ERROR: "danger"}
 # Todo-specific settings
 TODO_STAFF_ONLY = False
 TODO_DEFAULT_LIST_ID = None
-TODO_DEFAULT_ASSIGNEE = None
-TODO_DEFAULT_LIST_SLUG = 'tickets'
-TODO_PUBLIC_SUBMIT_REDIRECT = ''
+TODO_DEFAULT_ASSIGNEE = 'Dabygi'
+TODO_DEFAULT_LIST_SLUG = 'claim'
+TODO_PUBLIC_SUBMIT_REDIRECT = '/'
 TODO_ALLOW_FILE_ATTACHMENTS = True
 TODO_LIMIT_FILE_ATTACHMENTS = [".jpg", ".gif", ".png", ".csv", ".pdf"]

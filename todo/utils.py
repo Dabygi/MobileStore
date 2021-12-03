@@ -18,12 +18,16 @@ def staff_check(user):
     """If TODO_STAFF_ONLY is set to True, limit view access to staff users only.
         # FIXME: More granular access control needed - see
         https://github.com/shacker/django-todo/issues/50
+
+        Если для параметра DO_STUFF_ONLY установлено значение True, ограничьте доступ к просмотру только для сотрудников.
+        FIXME: Требуется более детальный контроль доступа
     """
 
     if defaults("TODO_STAFF_ONLY"):
         return user.is_staff
     else:
         # If unset or False, allow all logged in users
+        # Если значение не задано или равно False, разрешить всем зарегистрированным пользователям
         return True
 
 
@@ -32,7 +36,10 @@ def user_can_read_task(task, user):
 
 
 def todo_get_backend(task):
-    """Returns a mail backend for some task"""
+    """Returns a mail backend for some task
+
+    Возвращает backend почты для какой-либо задачи
+    """
     mail_backends = getattr(settings, "TODO_MAIL_BACKENDS", None)
     if mail_backends is None:
         return None
@@ -45,7 +52,10 @@ def todo_get_backend(task):
 
 
 def todo_get_mailer(user, task):
-    """A mailer is a (from_address, backend) pair"""
+    """A mailer is a (from_address, backend) pair
+
+    Почтовая программа - это пара (from_address, backend)
+    """
     task_backend = todo_get_backend(task)
     if task_backend is None:
         return (None, mail.get_connection)
@@ -56,7 +66,10 @@ def todo_get_mailer(user, task):
 
 
 def todo_send_mail(user, task, subject, body, recip_list):
-    """Send an email attached to task, triggered by user"""
+    """Send an email attached to task, triggered by user
+
+    Отправьте электронное письмо, прикрепленное к задаче, инициированной пользователем
+    """
     references = Comment.objects.filter(task=task).only("email_message_id")
     references = (ref.email_message_id for ref in references)
     references = " ".join(filter(bool, references))
@@ -66,13 +79,16 @@ def todo_send_mail(user, task, subject, body, recip_list):
 
     message_id = (
         # the task_id enables attaching back notification answers
+        # идентификатор задачи позволяет прикреплять ответы на уведомления
         "<notif-{task_id}."
         # the message hash / epoch pair enables deduplication
+        # пара хэш message_hash/epoch позволяет выполнять дедупликацию
         "{message_hash:x}."
         "{epoch}@django-todo>"
     ).format(
         task_id=task.pk,
         # avoid the -hexstring case (hashes can be negative)
+        # избегайте регистра -шестнадцатеричной строки (хэши могут быть отрицательными)
         message_hash=abs(message_hash),
         epoch=int(time.time()),
     )
@@ -80,6 +96,10 @@ def todo_send_mail(user, task, subject, body, recip_list):
     # the thread message id is used as a common denominator between all
     # notifications for some task. This message doesn't actually exist,
     # it's just there to make threading possible
+
+    # thread message id используется в качестве общего знаменателя между всеми уведомлениями для некоторой задачи.
+    # Это сообщение на самом деле не существует,
+    # оно просто предназначено для обеспечения возможности потоковой передачи
     thread_message_id = "<thread-{}@django-todo>".format(task.pk)
     references = "{} {}".format(references, thread_message_id)
 
@@ -105,6 +125,9 @@ def send_notify_mail(new_task):
     """
     Send email to assignee if task is assigned to someone other than submittor.
     Unassigned tasks should not try to notify.
+
+    Отправить электронное письмо назначенному лицу, если задача назначена кому-то другому, кроме отправителя.
+    Неназначенные задачи не должны пытаться отправлять уведомления.
     """
 
     if new_task.assigned_to == new_task.created_by:
@@ -121,7 +144,10 @@ def send_notify_mail(new_task):
 
 
 def send_email_to_thread_participants(task, msg_body, user, subject=None):
-    """Notify all previous commentors on a Task about a new comment."""
+    """Notify all previous commentors on a Task about a new comment.
+
+    Уведомлять всех предыдущих комментаторов к Задаче о новом комментарии.
+    """
 
     current_site = Site.objects.get_current()
     email_subject = subject
@@ -134,6 +160,7 @@ def send_email_to_thread_participants(task, msg_body, user, subject=None):
     )
 
     # Get all thread participants
+    # Получить всех участников трэда
     commenters = Comment.objects.filter(task=task)
     recip_list = set(ca.author.email for ca in commenters if ca.author is not None)
     for related_user in (task.created_by, task.assigned_to):
@@ -145,7 +172,10 @@ def send_email_to_thread_participants(task, msg_body, user, subject=None):
 
 
 def toggle_task_completed(task_id: int) -> bool:
-    """Toggle the `completed` bool on Task from True to False or vice versa."""
+    """Toggle the `completed` bool on Task from True to False or vice versa.
+
+    Переключатель `completed" меняет True на False или наоборот.
+    """
     try:
         task = Task.objects.get(id=task_id)
         task.completed = not task.completed
@@ -158,7 +188,10 @@ def toggle_task_completed(task_id: int) -> bool:
 
 
 def remove_attachment_file(attachment_id: int) -> bool:
-    """Delete an Attachment object and its corresponding file from the filesystem."""
+    """Delete an Attachment object and its corresponding file from the filesystem.
+
+    Удалить объект вложения и соответствующий ему файл из файловой системы.
+    """
     try:
         attachment = Attachment.objects.get(id=attachment_id)
         if attachment.file:
