@@ -1,0 +1,16 @@
+# Project exclude paths
+/venv/
+.idea
+djangoMobileStore/__pycache__/
+static_dev/
+store/__pycache__/
+store/api/__pycache__/
+store/migrations/__pycache__/
+store/templatetags/__pycache__/
+media/tasks/
+specs/__pycache__/
+specs/migrations/__pycache__/
+todo/mail/__pycache__/
+todo/mail/consumers/__pycache__/
+todo/mail/producers/__pycache__/
+
