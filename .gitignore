@@ -13,4 +13,4 @@ specs/migrations/__pycache__/
 todo/mail/__pycache__/
 todo/mail/consumers/__pycache__/
 todo/mail/producers/__pycache__/
-
+todo/__pycache__/
