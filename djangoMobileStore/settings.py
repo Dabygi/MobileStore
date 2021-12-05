@@ -179,9 +179,9 @@ LOCALE_PATHS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static_dev'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static_dev'),
+# )
 
 # Without this, uploaded files > 4MB end up with perm 0600, unreadable by web server process
 FILE_UPLOAD_PERMISSIONS = 0o644
