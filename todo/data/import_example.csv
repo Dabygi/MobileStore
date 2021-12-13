@@ -1,3 +1,4 @@
 Title,Group,Task List,Created By,Created Date,Due Date,Completed,Assigned To,Note,Priority
-Webcam freezes,customers,Requests for support,Customer1,,2021-12-14,No,Dabygi,Image freezes,1
-,,,,,,,,,
+Network problems,Customers,Requests for support,Customer1,2021-12-13,2021-12-25,No,Dabygi,There hasn't been a single break since January last year!,2
+Internet is disappearing,Customers,Requests for support,Customer2,2021-12-13,2021-12-28,No,Staffer1,I spilled some coffee on a white box with antennas and the internet started disappearing!,1
+Problems with email,Customers,Requests for support,Customer1,2021-12-13,2021-12-15,No,Staffer2,My colleagues decided to make a joke and changed my email password. They forgot the new password and now I can't log in to my mail.,1
