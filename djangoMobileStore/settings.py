@@ -206,11 +206,11 @@ DATABASES['default'].update(db_from_env)
 
 
 # # The URL to use when referring to static files (where they will be served from)
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #
 # MEDIA_URL = '/media/'
@@ -223,12 +223,12 @@ MEDIA_ROOT = '/media/'
 # S3_URL = '{}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)
 S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 MEDIA_URL = S3_URL + MEDIA_ROOT
-DEFAULT_FILE_STORAGE = 'YOUR_PROJECT.s3utils.MediaRootS3BotoStorage'
-STATICFILES_STORAGE = 'YOUR_PROJECT.s3utils.StaticRootS3BotoStorage'
+DEFAULT_FILE_STORAGE = 'djangoMobileStore.s3utils.MediaStorage'
+STATICFILES_STORAGE = 'djangoMobileStore.s3utils.StaticStorage'
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
-# AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL = None
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
 
 
