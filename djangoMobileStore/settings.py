@@ -220,8 +220,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Статика и медиа через Amazon S3
 AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
 MEDIA_ROOT = '/media/'
-# S3_URL = '{}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)
-S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+S3_URL = '{}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)
+
 MEDIA_URL = S3_URL + MEDIA_ROOT
 DEFAULT_FILE_STORAGE = 'djangoMobileStore.s3utils.MediaStorage'
 STATICFILES_STORAGE = 'djangoMobileStore.s3utils.StaticStorage'
