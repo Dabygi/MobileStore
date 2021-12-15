@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
     'store',
     'specs',
     'allauth',
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
     'todo',
     'dal',
     'dal_select2',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -203,22 +205,31 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
-# The URL to use when referring to static files (where they will be served from)
+# # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Simplified static file serving.
-# https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Статика и медиа через Amazon S3
+AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
+MEDIA_ROOT = '/media/'
+S3_URL = 'https://s3.console.aws.amazon.com/s3/buckets/' + AWS_STORAGE_BUCKET_NAME
+MEDIA_URL = S3_URL + MEDIA_ROOT
+DEFAULT_FILE_STORAGE = 'djangoMobileStore.s3utils.MediaRootS3BotoStorage'
+STATICFILES_STORAGE = 'djangoMobileStore.s3utils.StaticRootS3BotoStorage'
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+
+
+
