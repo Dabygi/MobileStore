@@ -226,12 +226,13 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-AWS_LOCATION = 'static'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+AWS_STATIC_LOCATION = 'static'
+STATICFILES_STORAGE = 'djangoMobileStore.s3utils.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
 
 # MEDIA_ROOT = 'media'
 # MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, MEDIA_ROOT)
+AWS_PUBLIC_MEDIA_LOCATION = 'media'
 DEFAULT_FILE_STORAGE = 'djangoMobileStore.s3utils.MediaStorage'
 # STATICFILES_STORAGE = 'djangoMobileStore.s3utils.StaticStorage'
 # STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, 'static')
