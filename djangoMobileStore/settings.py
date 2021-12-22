@@ -253,15 +253,15 @@ if USE_S3:
     AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_REGION_NAME = 'us-east-1'
     AWS_DEFAULT_ACL = 'None'    #'public-read'
-    AWS_S3_CUSTOM_DOMAIN = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_CUSTOM_DOMAIN = f's3.{AWS_S3_REGION_NAME}.s3.amazonaws.com'   #https://s3.us-east-1.s3.amazonaws.com/mobile-my-store/
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     # s3 static settings
     STATIC_LOCATION = 'static'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/{STATIC_LOCATION}/'
     STATICFILES_STORAGE = 'djangoMobileStore.s3utils.StaticStorage'
     # s3 public media settings
     PUBLIC_MEDIA_LOCATION = 'media'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STORAGE_BUCKET_NAME}/{PUBLIC_MEDIA_LOCATION}/'
     DEFAULT_FILE_STORAGE = 'djangoMobileStore.s3utils.PublicMediaStorage'
     # s3 private media settings
     PRIVATE_MEDIA_LOCATION = 'private'
