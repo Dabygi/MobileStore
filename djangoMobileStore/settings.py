@@ -27,7 +27,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'v9dhgv_^7!cals+&2b-zt*g!ltar=@mr5m+b05uj!284a@'
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'v9dhgv_^7!cals+&2b-zt*g!ltar=@mr5m+b05uj!284a@')
 
@@ -170,11 +169,6 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-# STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Without this, uploaded files > 4MB end up with perm 0600, unreadable by web server process
 FILE_UPLOAD_PERMISSIONS = 0o644
@@ -187,6 +181,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Override CSS class for the ERROR tag level to match Bootstrap class name
 MESSAGE_TAGS = {message_constants.ERROR: "danger"}
+
 
 # Todo-specific settings
 TODO_STAFF_ONLY = False
@@ -201,44 +196,6 @@ TODO_LIMIT_FILE_ATTACHMENTS = [".jpg", ".gif", ".png", ".csv", ".pdf"]
 # Heroku: Update database configuration from $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
-
-
-# # Статика через WhiteNoise
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-#
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# # Статика и медиа через Amazon S3
-# AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-# AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-# AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
-# AWS_DEFAULT_ACL = 'public-read'
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-#
-# AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=86400',
-# }
-#
-# AWS_STATIC_LOCATION = 'static'
-# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/'
-# STATICFILES_STORAGE = 'djangoMobileStore.s3utils.StaticStorage'
-#
-# MEDIA_ROOT = 'media'
-# AWS_PUBLIC_MEDIA_LOCATION = 'media'
-# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_PUBLIC_MEDIA_LOCATION}/'
-# DEFAULT_FILE_STORAGE = 'djangoMobileStore.s3utils.MediaStorage'
-# STATICFILES_STORAGE = 'djangoMobileStore.s3utils.StaticStorage'
-# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, 'static')
-
-
-
 
 
 # Static files (CSS, JavaScript, Images)
@@ -273,18 +230,3 @@ else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
-
-
-# {
-# 	"Version": "2012-10-17",
-# 	"Statement": [
-# 		{
-# 			"Sid": "Statement1",
-# 			"Principal": {},
-# 			"Effect": "Allow",
-# 			"Action": [],
-# 			"Resource": []
-# 		}
-# 	]
-# }
